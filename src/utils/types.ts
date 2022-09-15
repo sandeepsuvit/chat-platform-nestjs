@@ -4,6 +4,7 @@ import {
   FriendRequest,
   Group,
   GroupMessage,
+  GroupMessageAttachment,
   Message,
   MessageAttachment,
   User,
@@ -52,9 +53,9 @@ export type CreateParticipantParams = {
 };
 
 export type CreateMessageParams = {
+  id: number;
   content?: string;
   attachments?: Attachment[];
-  conversationId: number;
   user: User;
 };
 
@@ -64,6 +65,12 @@ export type CreateMessageResponse = {
 };
 
 export type DeleteMessageParams = {
+  userId: number;
+  conversationId: number;
+  messageId: number;
+};
+
+export type FindMessageParams = {
   userId: number;
   conversationId: number;
   messageId: number;
@@ -94,9 +101,10 @@ export type FetchGroupsParams = {
 };
 
 export type CreateGroupMessageParams = {
-  groupId: number;
-  content: string;
   author: User;
+  attachments?: Attachment[];
+  content: string;
+  groupId: number;
 };
 
 export type CreateGroupMessageResponse = {
@@ -209,3 +217,18 @@ export type UploadMessageAttachmentParams = {
   file: Attachment;
   messageAttachment: MessageAttachment;
 };
+
+export type UploadGroupMessageAttachmentParams = {
+  file: Attachment;
+  messageAttachment: GroupMessageAttachment;
+};
+
+export type GetConversationMessagesParams = {
+  id: number;
+  limit: number;
+};
+
+export type UpdateConversationParams = Partial<{
+  id: number;
+  lastMessageSent: Message;
+}>;

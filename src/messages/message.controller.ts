@@ -43,12 +43,12 @@ export class MessageController {
   async createMessage(
     @AuthUser() user: User,
     @UploadedFiles() { attachments }: { attachments: Attachment[] },
-    @Param('id', ParseIntPipe) conversationId: number,
+    @Param('id', ParseIntPipe) id: number,
     @Body()
     { content }: CreateMessageDto,
   ) {
     if (!attachments && !content) throw new EmptyMessageException();
-    const params = { user, conversationId, content, attachments };
+    const params = { user, id, content, attachments };
     const response = await this.messageService.createMessage(params);
     this.eventEmitter.emit('message.create', response);
     return;
@@ -71,16 +71,9 @@ export class MessageController {
     @Param('id', ParseIntPipe) conversationId: number,
     @Param('messageId', ParseIntPipe) messageId: number,
   ) {
-    await this.messageService.deleteMessage({
-      userId: user.id,
-      conversationId,
-      messageId,
-    });
-    this.eventEmitter.emit('message.delete', {
-      userId: user.id,
-      messageId,
-      conversationId,
-    });
+    const params = { userId: user.id, conversationId, messageId };
+    await this.messageService.deleteMessage(params);
+    this.eventEmitter.emit('message.delete', params);
     return { conversationId, messageId };
   }
   // api/conversations/:conversationId/messages/:messageId

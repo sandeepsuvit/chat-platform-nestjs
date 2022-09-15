@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConversationsModule } from '../conversations/conversations.module';
+import { FriendsModule } from '../friends/friends.module';
 import { ImageStorageModule } from '../image-storage/image-storage.module';
 import { MessageAttachmentsModule } from '../message-attachments/message-attachments.module';
 import { Services } from '../utils/constants';
@@ -12,6 +14,8 @@ import { MessageService } from './message.service';
     TypeOrmModule.forFeature([Message, Conversation]),
     ImageStorageModule,
     MessageAttachmentsModule,
+    ConversationsModule,
+    FriendsModule,
   ],
   controllers: [MessageController],
   providers: [
